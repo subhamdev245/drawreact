@@ -14,4 +14,5 @@ import { FaPen ,FaRedo,FaUndo,FaEraser,FaDownload} from "react-icons/fa";
     { color: 'bg-black', Label: 'black' },
     { color: 'bg-green-700', Label: 'green' },
     { color: 'bg-sky-700', Label: 'sky'},
+    { color: 'bg-yellow-600', Label: 'yellow'},
   ];
