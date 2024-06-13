@@ -1,29 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Color, IconsArray } from '../util/data';
 
 const Board = () => {
   const canvasRef = useRef(null);
-  
- 
-  const Clr = useSelector(store => store.toolkit.sideui)
-  const BrushSize = useSelector(store => store.toolkit.strokesize)
-  const Icon = useSelector(store => store.toolkit.topui)
-  const color = Color[Clr].Label
+  const [color, setColor] = useState('#000000');
+  const [brushSize, setBrushSize] = useState(5);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  useEffect(()=>{
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;  
-    canvas.height = window.innerHeight;
-  },[])
   useEffect(() => {
     
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
+    canvas.width = window.innerWidth;  
+    canvas.height = window.innerHeight;
     const startDrawing = (e) => {
       setIsDrawing(true);
       draw(e);
@@ -31,24 +20,20 @@ const Board = () => {
 
     const stopDrawing = () => {
       setIsDrawing(false);
-      ctx.beginPath();
-   };
+
+    };
 
     const draw = (e) => {
       if (!isDrawing) return;
 
-      ctx.lineWidth = BrushSize;
+      ctx.lineWidth = brushSize;
       ctx.lineCap = 'round'; // Make the line end look rounded
-      if (IconsArray[Icon].Label === "Eraser") {
-        ctx.strokeStyle = "white";
-      } else {
-        ctx.strokeStyle = color;
-      }
+      ctx.strokeStyle = color;
 
-      ctx.lineTo(e.clientX , e.clientY );
+      ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(e.clientX , e.clientY );
+      ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
     };
 
     // Add event listeners
@@ -64,11 +49,11 @@ const Board = () => {
       canvas.removeEventListener('mouseup', stopDrawing);
       canvas.removeEventListener('mouseout', stopDrawing);
     };
-  }, [BrushSize,Clr, isDrawing]);
+  }, [color, brushSize, isDrawing]);
   
   return(
     <canvas ref={canvasRef}>
-      
+
     </canvas>
   )
 };

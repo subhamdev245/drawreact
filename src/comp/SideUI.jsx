@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Color ,IconsArray} from '../util/data'
-import { updateSideui } from '../util/Toolkit'
+import { updateSideui,updateStrokeSize } from '../util/Toolkit'
 const SideUI = () => {
  const active = useSelector( store => store.toolkit.sideui)
  const topActive = useSelector( store => store.toolkit.topui)
- console.log(active);
+ const brushsize = useSelector(store => store.toolkit.strokesize)
+ const [stroke,setStroke] = useState(brushsize)
+
  const dispatch = useDispatch()
   return (
     <div className='absolute sm:left-0 sm:top-1/2 sm:transform sm:-translate-y-1/2 sm:translate-x-0 
@@ -32,8 +34,12 @@ const SideUI = () => {
 </div>
     }
     <div className=' flex flex-col  justify-between items-center gap-3'>
-        <input type="range" name="" id="" />
+        <input type="range" name="" id="" value={stroke} onChange={(e)=>{
+            setStroke(e.target.value)
+            dispatch(updateStrokeSize(stroke))
+        }}/>
         <label htmlFor="range" >Stroke Opacity</label>
+        <p>{stroke}</p>
     </div>
     </div>
   )

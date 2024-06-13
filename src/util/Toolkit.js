@@ -6,6 +6,7 @@ const datatoolkit = createSlice({
     initialState:{
         topui:0,
         sideui:0,
+        strokesize:15,
     },
     reducers:{
         updateTopui:(state,action)=>{
@@ -13,10 +14,13 @@ const datatoolkit = createSlice({
         },
         updateSideui:(state,action)=>{
             state.sideui = action.payload
+        },
+        updateStrokeSize:(state,action)=>{
+            state.strokesize = action.payload
         }
     }
 })
 
-export const {updateSideui,updateTopui} = datatoolkit.actions
+export const {updateSideui,updateTopui,updateStrokeSize} = datatoolkit.actions
 
 export default datatoolkit.reducer
