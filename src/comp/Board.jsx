@@ -24,6 +24,14 @@ const Board = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
+    const getMousePosition = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.clientX ,
+        y: e.clientY 
+      };
+    };
+
     const startDrawing = (e) => {
       setIsDrawing(true);
       draw(e);
@@ -36,7 +44,7 @@ const Board = () => {
 
     const draw = (e) => {
       if (!isDrawing) return;
-
+      const pos = e.type.includes('mouse') ? getMousePosition(e) : getTouchPosition(e);
       ctx.lineWidth = BrushSize;
       ctx.lineCap = 'round'; // Make the line end look rounded
       if (IconsArray[Icon].Label === "Eraser") {
