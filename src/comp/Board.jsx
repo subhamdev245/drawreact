@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { Color, IconsArray } from '../util/data';
+import { updateTopui } from '../util/Toolkit';
 
 const Board = () => {
   const canvasRef = useRef(null);
-  
+  const dispatch = useDispatch()
  
   const Clr = useSelector(store => store.toolkit.sideui)
   const BrushSize = useSelector(store => store.toolkit.strokesize)
@@ -18,6 +19,8 @@ const Board = () => {
 
     canvas.width = window.innerWidth;  
     canvas.height = window.innerHeight;
+    
+    
   },[])
   useEffect(() => {
     
@@ -41,7 +44,13 @@ const Board = () => {
       setIsDrawing(false);
       ctx.beginPath();
    };
-
+   if (IconsArray[Icon].Label === "Download") {
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/jpg');
+    link.download = 'canvas.jpg';
+    link.click();
+  dispatch(updateTopui(0))
+  }
     const draw = (e) => {
       if (!isDrawing) return;
       const pos = e.type.includes('mouse') ? getMousePosition(e) : getTouchPosition(e);
@@ -81,7 +90,7 @@ const Board = () => {
       canvas.removeEventListener('touchend', stopDrawing);
       canvas.removeEventListener('touchcancel', stopDrawing);
     };
-  }, [BrushSize,Clr, isDrawing]);
+  }, [BrushSize,Clr, isDrawing,Icon]);
   
   return(
     <canvas ref={canvasRef}>
